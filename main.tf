@@ -25,7 +25,7 @@ terraform {
 
 resource "terracurl_request" "trigger_ansible" {
   name           = "trigger_aap_job"
-  url            = "${var.AAP_HOST}/api/v2/job_templates/${var.JOB_ID}/launch/"
+  url            = "${var.AAP_HOST}/api/controller/v2/job_templates/${var.JOB_ID}/launch/"
   method         = "POST"
   
   headers = {
