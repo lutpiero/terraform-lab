@@ -1,3 +1,19 @@
+variable "AAP_TOKEN" {
+  description = "The Bearer Token for Ansible Automation Platform"
+  type        = string
+  sensitive   = true # This hides the value from CLI output/logs
+}
+
+variable "AAP_HOST" {
+  description = "The URL of your AAP instance"
+  type        = string
+}
+
+variable "JOB_ID" {
+  description = "The ID of the Job Template to launch"
+  type        = string
+}
+
 terraform {
   required_providers {
     terracurl = {
