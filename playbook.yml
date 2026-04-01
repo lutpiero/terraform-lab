@@ -8,13 +8,6 @@
         upgrade: dist
         update_cache: yes
 
-    - name: Secure the SSH port
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^PermitRootLogin'
-        line: 'PermitRootLogin no'
-      notify: Restart SSH
-
     - name: Install Runtime (Node.js or PHP)
       apt:
         name: ["nginx", "nodejs", "npm"]
