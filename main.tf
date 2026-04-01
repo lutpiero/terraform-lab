@@ -31,6 +31,7 @@ resource "terracurl_request" "trigger_ansible" {
   headers = {
     Authorization = "Bearer ${var.AAP_TOKEN}"
     Content-Type  = "application/json"
+    X-Force-Retry = "1"  
   }
 
   # We send an empty JSON body to trigger the launch
