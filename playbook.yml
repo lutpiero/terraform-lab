@@ -1,33 +1,27 @@
 ---
-- name: Hardening & Proxy Setup
+- name: Hardening and App Environment Setup
   hosts: all
   become: yes
   tasks:
-    - name: Pasang UFW Firewall
+    - name: Update all OS packages
       apt:
-        name: ufw
-        state: present
+        upgrade: dist
+        update_cache: yes
 
-    - name: Izinkan Port HTTP & HTTPS
-      ufw:
-        rule: allow
-        port: "{{ item }}"
-        proto: tcp
-      loop: ['80', '443', '22']
+    - name: Secure the SSH port
+      lineinfile:
+        path: /etc/ssh/sshd_config
+        regexp: '^PermitRootLogin'
+        line: 'PermitRootLogin no'
+      notify: Restart SSH
 
-    - name: Install Nginx sebagai Reverse Proxy
+    - name: Install Runtime (Node.js or PHP)
       apt:
-        name: nginx
+        name: ["nginx", "nodejs", "npm"]
         state: present
-
-    - name: Deploy Konfigurasi Proxy untuk Aplikasi PHP/Node.js
-      template:
-        src: proxy.conf.j2
-        dest: /etc/nginx/sites-available/default
-      notify: Reload Nginx
 
   handlers:
-    - name: Reload Nginx
+    - name: Restart SSH
       service:
-        name: nginx
-        state: reloaded
+        name: ssh
+        state: restarted
