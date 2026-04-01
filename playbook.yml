@@ -1,0 +1,33 @@
+---
+- name: Hardening & Proxy Setup
+  hosts: all
+  become: yes
+  tasks:
+    - name: Pasang UFW Firewall
+      apt:
+        name: ufw
+        state: present
+
+    - name: Izinkan Port HTTP & HTTPS
+      ufw:
+        rule: allow
+        port: "{{ item }}"
+        proto: tcp
+      loop: ['80', '443', '22']
+
+    - name: Install Nginx sebagai Reverse Proxy
+      apt:
+        name: nginx
+        state: present
+
+    - name: Deploy Konfigurasi Proxy untuk Aplikasi PHP/Node.js
+      template:
+        src: proxy.conf.j2
+        dest: /etc/nginx/sites-available/default
+      notify: Reload Nginx
+
+  handlers:
+    - name: Reload Nginx
+      service:
+        name: nginx
+        state: reloaded
