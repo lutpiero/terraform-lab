@@ -3,7 +3,7 @@
   hosts: all
   become: yes
   tasks:
-    - name: Update all OS packages
+    - name: Update all Ubuntu OS packages
       apt:
         upgrade: dist
         update_cache: yes
